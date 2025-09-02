@@ -78,7 +78,7 @@ button:hover {
   padding: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  gap: 24px;
 }
 
 .result-card {
@@ -101,8 +101,11 @@ button:hover {
 
 .result-thumb {
   width: 100%;
-  height: 160px;
+  height: 380px;
   object-fit: cover;
+  align-items: center;
+  display: flex;
+  justify-content: center;
   border-radius: 12px;
   margin-bottom: 12px;
 }
@@ -120,3 +123,4 @@ button:hover {
   color: #B0B0B0;
   word-break: break-all;
 }
+
