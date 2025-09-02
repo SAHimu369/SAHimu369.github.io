@@ -12,6 +12,11 @@
   --md-elevation3: 0px 5px 12px rgba(0,0,0,0.7);
 }
 
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--md-background);
   color: var(--md-on-surface);
@@ -19,10 +24,11 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
 header {
-  padding: 24px;
+  padding: 24px 16px;
   text-align: center;
   font-size: 28px;
   font-weight: 700;
@@ -33,12 +39,14 @@ header {
 .search-container {
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 20px 16px;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 input[type="text"] {
-  width: 60%;
+  width: 100%;
+  max-width: 600px;
   padding: 14px 20px;
   border: none;
   border-radius: 28px;
@@ -66,6 +74,7 @@ button {
   cursor: pointer;
   box-shadow: var(--md-elevation1);
   transition: box-shadow 0.2s ease, transform 0.1s ease;
+  min-width: 120px;
 }
 
 button:hover {
@@ -76,10 +85,10 @@ button:hover {
 .results {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 10px;
+  padding: 10px 16px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .result-card {
@@ -102,13 +111,14 @@ button:hover {
 
 .result-thumb {
   width: 100%;
-  height: 360px;
+  height: 200px;
   object-fit: cover;
-  align-items: center;
   display: flex;
   justify-content: center;
-  border-radius: 12px;
+  align-items: center;
+  border-radius: 8px;
   margin-bottom: 12px;
+  background-color: #2A2A2A;
 }
 
 .result-title {
@@ -117,12 +127,111 @@ button:hover {
   color: var(--md-primary);
   text-decoration: none;
   margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .result-url {
   font-size: 13px;
   color: #B0B0B0;
   word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
+/* Mobile-first responsive adjustments */
+@media (max-width: 768px) {
+  header {
+    font-size: 24px;
+    padding: 16px;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 12px;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .results {
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    gap: 16px;
+  }
+  
+  .result-thumb {
+    height: 660px;
+  }
+  
+  .result-title {
+    font-size: 16px;
+  }
+}
 
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .results {
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  }
+  
+  .result-thumb {
+    height: 630px;
+  }
+}
+
+/* Desktop enhancements */
+@media (min-width: 1025px) {
+  .result-thumb {
+    height: 512px;
+  }
+}
+
+/* Large desktop screens */
+@media (min-width: 1440px) {
+  .results {
+    grid-template-columns: repeat(auto-fill, minmax(376px, 1fr));
+  }
+  
+  .result-thumb {
+    height: 512px;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .result-card:hover,
+  button:hover,
+  input[type="text"]:focus {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --md-on-surface: #FFFFFF;
+  }
+  
+  .result-url {
+    color: #E0E0E0;
+  }
+}
