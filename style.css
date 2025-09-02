@@ -1,0 +1,122 @@
+/* Material 3 Dark Theme */
+:root {
+  --md-background: #121212;
+  --md-surface: #1E1E1E;
+  --md-primary: #BB86FC;
+  --md-on-primary: #121212;
+  --md-on-surface: #E0E0E0;
+  --md-secondary: #03DAC6;
+  --md-on-secondary: #121212;
+  --md-elevation1: 0px 1px 3px rgba(0,0,0,0.3);
+  --md-elevation2: 0px 3px 6px rgba(0,0,0,0.5);
+  --md-elevation3: 0px 5px 12px rgba(0,0,0,0.7);
+}
+
+body {
+  background: var(--md-background);
+  color: var(--md-on-surface);
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+header {
+  padding: 24px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--md-primary);
+  letter-spacing: 0.5px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  gap: 10px;
+}
+
+input[type="text"] {
+  width: 60%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 28px;
+  font-size: 16px;
+  outline: none;
+  background-color: #1A1A1A;
+  color: var(--md-on-surface);
+  box-shadow: var(--md-elevation1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+input[type="text"]:focus {
+  box-shadow: var(--md-elevation3);
+  transform: scale(1.01);
+}
+
+button {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 28px;
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--md-elevation1);
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  box-shadow: var(--md-elevation3);
+  transform: translateY(-2px);
+}
+
+.results {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.result-card {
+  background-color: #1A1A1A;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: var(--md-elevation2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--md-elevation3);
+}
+
+.result-thumb {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--md-primary);
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.result-url {
+  font-size: 13px;
+  color: #B0B0B0;
+  word-break: break-all;
+}
