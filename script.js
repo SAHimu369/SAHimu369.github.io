@@ -38,6 +38,13 @@ const sites = [
   }
 ];
 
+// Add Enter key functionality to search input
+document.getElementById("query").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    performSearch();
+  }
+});
+
 document.getElementById("search-btn").addEventListener("click", performSearch);
 
 async function fetchPoster(query) {
