@@ -45,7 +45,8 @@ document.getElementById("query").addEventListener("keypress", function(e) {
   }
 });
 
-document.getElementById("search-btn").addEventListener("click", performSearch);
+// Fix the event listener for the search button
+document.querySelector(".search-button").addEventListener("click", performSearch);
 
 async function fetchPoster(query) {
   try {
