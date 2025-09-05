@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Cinematic Search</title>
+<title>Material 3 Cinematic Search</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
 </head>
 <body>
 
 <header>Multi-Site Movie Search</header>
 
+<!-- Change the search container to include a clickable search button -->
 <div class="search-container">
   <input type="text" id="query" placeholder="Search by typing movies name and year...">
-  <button id="search-btn">Search</button>
+  <button id="search-btn" class="search-button">
+    <span class="material-symbols-outlined">search</span>
+  </button>
 </div>
 
 <div class="results" id="results"></div>
@@ -21,4 +25,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
