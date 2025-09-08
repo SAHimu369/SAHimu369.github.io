@@ -35,6 +35,14 @@ const sites = [
       cleaned = cleaned.replace(/\s+/g, " ").trim();
       return "http://mm.towkai.com/search?q=" + encodeURIComponent(cleaned);
     }
+  },
+  {
+    name: "Cinedoze",
+    buildUrl: (q) => {
+      // Replace spaces with + for URL encoding
+      const formattedQuery = q.replace(/\s+/g, '+');
+      return `https://cinedoze.com/?s=${encodeURIComponent(formattedQuery)}`;
+    }
   }
 ];
 
@@ -46,7 +54,7 @@ document.getElementById("query").addEventListener("keypress", function(e) {
 });
 
 // Fix the event listener for the search button
-document.querySelector(".search-button").addEventListener("click", performSearch);
+document.getElementById("search-btn").addEventListener("click", performSearch);
 
 async function fetchPoster(query) {
   try {
@@ -72,8 +80,10 @@ async function performSearch() {
   sites.forEach((site) => {
     const url = site.buildUrl(query);
 
-    const card = document.createElement("div");
+    const card = document.createElement("a");
     card.className = "result-card";
+    card.href = url;
+    card.target = "_blank";
 
     // Only add image if poster exists
     if (posterUrl) {
@@ -82,12 +92,16 @@ async function performSearch() {
       img.src = posterUrl;
       img.alt = query + " poster";
       card.appendChild(img);
+    } else {
+      // Add placeholder if no poster
+      const placeholder = document.createElement("div");
+      placeholder.className = "result-thumb";
+      placeholder.textContent = "No poster available";
+      card.appendChild(placeholder);
     }
 
-    const title = document.createElement("a");
+    const title = document.createElement("div");
     title.className = "result-title";
-    title.href = url;
-    title.target = "_blank";
     title.textContent = `${query} - ${site.name}`;
 
     const siteUrl = document.createElement("div");
