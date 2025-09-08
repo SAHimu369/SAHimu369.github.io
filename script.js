@@ -1,5 +1,19 @@
 const TMDB_API_KEY = 'b4d31f50aba10c665dfa02cf7a5cdf16';
 
+// Preload multiple audio instances for rapid hovers
+const audioInstances = [];
+for (let i = 0; i < 5; i++) {
+  const audio = new Audio();
+  audio.src = "click.mp3";
+  audio.volume = 0.3; // Lower volume for hover
+  audioInstances.push(audio);
+}
+let currentAudioIndex = 0;
+
+// Main click audio
+const clickAudio = new Audio();
+clickAudio.src = "click.mp3";
+
 const sites = [
   { 
     name: "Goojara", 
@@ -39,7 +53,6 @@ const sites = [
   {
     name: "Cinedoze",
     buildUrl: (q) => {
-      // Replace spaces with + for URL encoding
       const formattedQuery = q.replace(/\s+/g, '+');
       return `https://cinedoze.com/?s=${encodeURIComponent(formattedQuery)}`;
     }
@@ -53,8 +66,22 @@ document.getElementById("query").addEventListener("keypress", function(e) {
   }
 });
 
-// Fix the event listener for the search button
+// Event listener for the search button
 document.getElementById("search-btn").addEventListener("click", performSearch);
+
+// Play click sound function
+function playSound() {
+  clickAudio.currentTime = 0;
+  clickAudio.play().catch(e => console.log("Audio play failed:", e));
+}
+
+// Play hover sound using round-robin approach
+function playHoverSound() {
+  const audio = audioInstances[currentAudioIndex];
+  audio.currentTime = 0;
+  audio.play().catch(e => console.log("Hover audio play failed:", e));
+  currentAudioIndex = (currentAudioIndex + 1) % audioInstances.length;
+}
 
 async function fetchPoster(query) {
   try {
@@ -66,16 +93,63 @@ async function fetchPoster(query) {
   } catch (err) {
     console.error("TMDb fetch error:", err);
   }
-  return null; // No placeholder
+  return null;
 }
+
+// Function to simulate cinematic loading progress
+function simulateCinematicLoading() {
+  const progressBar = document.getElementById('cinematic-progress');
+  const loadingScreen = document.getElementById('cinematic-loading');
+  
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      
+      // Animate out the loading screen
+      setTimeout(() => {
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.transform = 'translateY(-20px)';
+        
+        // Hide loading screen completely after animation
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 800);
+      }, 300);
+    }
+    progressBar.style.width = progress + '%';
+  }, 200);
+}
+
+// Initialize cinematic loading when page loads
+window.addEventListener('load', function() {
+  simulateCinematicLoading();
+});
 
 async function performSearch() {
   const query = document.getElementById("query").value.trim();
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "";
-  if (!query) return;
+  
+  if (!query) {
+    resultsDiv.innerHTML = "<p class='error-message'>Please enter a search query</p>";
+    return;
+  }
 
+  // Show loading state
+  resultsDiv.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Searching...</p>
+    </div>
+  `;
+  
   const posterUrl = await fetchPoster(query);
+
+  // Clear loading state
+  resultsDiv.innerHTML = "";
 
   sites.forEach((site) => {
     const url = site.buildUrl(query);
@@ -84,21 +158,46 @@ async function performSearch() {
     card.className = "result-card";
     card.href = url;
     card.target = "_blank";
+    card.rel = "noopener noreferrer";
 
-    // Only add image if poster exists
+    // Add click sound
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      playSound();
+      setTimeout(() => {
+        window.open(url, '_blank');
+      }, 100);
+    });
+
+    // Add instant hover sound
+    card.addEventListener('mouseenter', () => {
+      playHoverSound();
+    });
+
+    // Create image container
+    const imgContainer = document.createElement("div");
+    imgContainer.className = "result-thumb";
+    
     if (posterUrl) {
       const img = document.createElement("img");
-      img.className = "result-thumb";
       img.src = posterUrl;
       img.alt = query + " poster";
-      card.appendChild(img);
+      img.onerror = function() {
+        this.style.display = 'none';
+        const placeholder = document.createElement("div");
+        placeholder.className = "poster-placeholder";
+        placeholder.textContent = "No poster available";
+        imgContainer.appendChild(placeholder);
+      };
+      imgContainer.appendChild(img);
     } else {
-      // Add placeholder if no poster
       const placeholder = document.createElement("div");
-      placeholder.className = "result-thumb";
+      placeholder.className = "poster-placeholder";
       placeholder.textContent = "No poster available";
-      card.appendChild(placeholder);
+      imgContainer.appendChild(placeholder);
     }
+
+    card.appendChild(imgContainer);
 
     const title = document.createElement("div");
     title.className = "result-title";
