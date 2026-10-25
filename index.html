@@ -1,45 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Material 3 Cinematic Search</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Spatial Glassmorphism 3D Cinematic Movie Search experience">
+    <meta name="theme-color" content="#030712">
+    <title>Spatial 3D Cinematic Search</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="night-mode">
 
-<!-- Cinematic Loading Screen -->
-<div class="cinematic-loading-screen" id="cinematic-loading">
-    <div class="loading-logo">
-        <div class="loading-logo-text">CINEMATIC</div>
+    <!-- Custom Mouse Cursor System (Desktop Hover Only) -->
+    <div class="custom-cursor-dot" id="cursor-dot"></div>
+    <div class="custom-cursor-ring" id="cursor-ring"></div>
+
+    <!-- Spatial Background Glow Orbs -->
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+    <div class="background-glow glow-3"></div>
+
+    <!-- Cinematic Loading Screen -->
+    <div class="cinematic-loading-screen" id="cinematic-loading">
+        <div class="loading-logo">
+            <div class="loading-logo-text">SPATIAL 3D</div>
+        </div>
+        <div class="cinematic-loader">
+            <div class="cinematic-progress" id="cinematic-progress"></div>
+        </div>
+        <div class="loading-status">Initializing Spatial 3D Experience</div>
+        <div class="loading-dots">
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        </div>
+        <div class="loading-hint">Prepare for immersive discovery</div>
     </div>
-    <div class="cinematic-loader">
-        <div class="cinematic-progress" id="cinematic-progress"></div>
-    </div>
-    <div class="loading-status">Loading immersive experience</div>
-    <div class="loading-dots">
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-    </div>
-    <div class="loading-hint">Your cinematic journey is about to begin</div>
-</div>
 
-<header>Multi-Site Movie Search</header>
+    <!-- Top Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <span class="material-symbols-outlined logo-icon">auto_awesome</span>
+            <span>SPATIAL CINEMA</span>
+        </div>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Day and Night Theme">
+            <span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+            <span id="theme-text">Day Mode</span>
+        </button>
+    </nav>
 
-<!-- Change the search container to include a clickable search button -->
-<div class="search-container">
-  <input type="text" id="query" placeholder="Search by typing movies name and year...">
-  <button id="search-btn" class="search-button">
-    <span class="material-symbols-outlined">search</span>
-  </button>
-</div>
+    <main class="main-container">
+        <header class="hero-header">
+            <h1 class="hero-title">Spatial 3D Search</h1>
+            <p class="hero-subtitle">Multi-site movie streaming discovery in fluid glassmorphism</p>
+        </header>
 
-<div class="results" id="results"></div>
+        <!-- 3D Perspective Search Bar -->
+        <div class="search-wrapper-3d">
+            <div class="search-container">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" id="query" placeholder="Type movie name and year (e.g. Avatar 2022)..." autocomplete="off" aria-label="Movie search query">
+                <button id="search-btn" class="search-button" aria-label="Execute search">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+        </div>
 
-<script src="script.js"></script>
+        <!-- Filter Chips Container -->
+        <div class="filter-section">
+            <div class="filter-label">Active Streaming Providers</div>
+            <div class="filter-container" id="filter-container"></div>
+        </div>
+
+        <!-- Results Grid -->
+        <div class="results" id="results"></div>
+    </main>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registered!', reg))
+            .catch(err => console.log('Service Worker registration failed:', err));
+        });
+      }
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>
